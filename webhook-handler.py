@@ -64,6 +64,7 @@ def handle_web_hook():
     except KeyError:
         name = None
 
+    print "some random string"
     return dumps(payload, indent=4)
 
 if __name__ == '__main__':
