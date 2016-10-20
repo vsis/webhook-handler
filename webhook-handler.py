@@ -65,7 +65,9 @@ def handle_web_hook():
     except KeyError:
         name = None
 
-    print "some random string"
+    print "branch: %s" % branch
+    print "name: %s" % name
+    print "event: %s" % event
     return dumps(payload, indent=4)
 
 if __name__ == '__main__':
