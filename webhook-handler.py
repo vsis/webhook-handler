@@ -20,6 +20,7 @@ def handle_web_hook():
         abort(501)
                                                                   
     # HMAC requires the key to be bytes, but data is string
+    secret = "JB7Cb5XB+luPPDwvaL68lQ=="
     mac = hmac.new(str(secret), msg=request.data, digestmod=sha1)
 
     if not str(mac.hexdigest()) == str(signature):
@@ -64,7 +65,6 @@ def handle_web_hook():
         name = None
 
     return dumps(payload, indent=4)
-
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
