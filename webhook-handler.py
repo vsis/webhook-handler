@@ -2,6 +2,7 @@
 import hmac
 from json import loads, dumps
 from flask import Flask, request, abort
+from hashlib import sha1
 
 
 application = Flask(__name__)
