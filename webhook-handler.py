@@ -13,6 +13,7 @@ def handle_web_hook():
     
     # Only SHA1 is supported
     header_signature = request.headers.get('X-Hub-Signature')
+    print "No github signature found!"
     if header_signature is None:
         abort(403)
                                                                   
