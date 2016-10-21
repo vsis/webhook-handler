@@ -13,8 +13,8 @@ def handle_web_hook():
     
     # Only SHA1 is supported
     header_signature = request.headers.get('X-Hub-Signature')
-    print "No github signature found!"
     if header_signature is None:
+        print "No github signature found!"
         abort(403)
                                                                   
     sha_name, signature = header_signature.split('=')
@@ -25,6 +25,7 @@ def handle_web_hook():
     mac = hmac.new(str(settings.secret), msg=request.data, digestmod=sha1)
 
     if not str(mac.hexdigest()) == str(signature):
+        print "Invalid github signature"
         abort(403)
 
     # Handle ping event
