@@ -1,4 +1,4 @@
-
+import settings
 import hmac
 from json import loads, dumps
 from flask import Flask, request, abort
@@ -21,8 +21,7 @@ def handle_web_hook():
         abort(501)
                                                                   
     # HMAC requires the key to be bytes, but data is string
-    secret = "JB7Cb5XB+luPPDwvaL68lQ=="
-    mac = hmac.new(str(secret), msg=request.data, digestmod=sha1)
+    mac = hmac.new(str(settings.secret), msg=request.data, digestmod=sha1)
 
     if not str(mac.hexdigest()) == str(signature):
         abort(403)
