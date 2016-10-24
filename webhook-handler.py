@@ -44,7 +44,7 @@ def handle_web_hook():
 
     # Dump payload, if necessary
     if settings.dump_payload:
-	write_payload()
+	write_payload(payload)
 
     # Make a response. It is not really important
     response = {
@@ -85,7 +85,7 @@ def get_branch_parameters(payload, event):
         name = None
     return (name,branch)
 
-def write_payload():
+def write_payload(payload):
     with open(settings.dump_payload_file, 'a') as json_file:
         dump(payload, json_file)
 
