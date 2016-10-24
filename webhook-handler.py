@@ -1,6 +1,6 @@
 import settings
 import hmac
-from json import loads, dumps
+from json import loads, dumps, dump
 from flask import Flask, request, abort
 from hashlib import sha1
 
@@ -39,6 +39,23 @@ def handle_web_hook():
     except ValueError:
         abort(400)
 
+    # Get repository name and branch
+    name, branch = get_branch_parameters(payload, event)
+
+    # Dump payload, if necessary
+    if settings.dump_payload:
+	write_payload()
+
+    # Make a response. It is not really important
+    response = {
+        "name": name,
+        "branch": branch,
+        "event": event,
+    }
+
+    return dumps(response)
+
+def get_branch_parameters(payload, event):
     try:
         # Case 1: a ref_type indicates the type of ref.
         # This true for create and delete events.
@@ -54,22 +71,23 @@ def handle_web_hook():
         elif event in ['push']:
             # Push events provide a full Git ref in 'ref' and not a 'ref_type'.
             branch = payload['ref'].split('/')[2]
+        else:
+            branch = None
     except KeyError:
         # If the payload structure isn't what we expect, we'll live without
         # the branch name
         branch = None
-
     # All current events have a repository, but some legacy events do not,
     # so let's be safe
     try:
         name = payload['repository']['name']
     except KeyError:
         name = None
+    return (name,branch)
 
-    print "branch: %s" % branch
-    print "name: %s" % name
-    print "event: %s" % event
-    return dumps(payload, indent=4)
+def write_payload():
+    with open(settings.dump_payload_file, 'a') as json_file:
+        dump(payload, json_file)
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
