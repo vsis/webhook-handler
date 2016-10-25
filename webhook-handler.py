@@ -87,7 +87,7 @@ def get_branch_parameters(payload, event):
 
 def write_payload(payload):
     with open(settings.dump_payload_file, 'a') as json_file:
-        dump(payload, json_file)
+        dump(payload, json_file, indent=4)
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
