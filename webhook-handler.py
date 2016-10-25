@@ -95,8 +95,8 @@ def execute_action(event, name, branch, payload):
         action = defined_actions[event]
     except KeyError:
         print "Action for '%s' event is not defined" % event
-        abort(501)
-    action(name, branch, payload)
+        return None
+    return action(name, branch, payload)
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
