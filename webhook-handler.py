@@ -11,21 +11,23 @@ application = Flask(__name__)
 
 @application.route('/github', methods=['POST'])
 def handle_web_hook():
-    # Only SHA1 is supported
-    header_signature = request.headers.get('X-Hub-Signature')
-    if header_signature is None:
-        print "No github signature found!"
-        abort(403)
-    sha_name, signature = header_signature.split('=')
-    if sha_name != 'sha1':
-        abort(501)
-    # HMAC requires the key to be bytes, but data is string
-    mac = hmac.new(str(settings.secret), msg=request.data, digestmod=sha1)
-    if not str(mac.hexdigest()) == str(signature):
-        print "Invalid github signature"
-        abort(403)
-    # Handle ping event
+    # If settigs tell us to check signature, do it
+    if settings.check_signature:
+        header_signature = request.headers.get('X-Hub-Signature')
+        if header_signature is None:
+            print "No github signature found!"
+            abort(403)
+        sha_name, signature = header_signature.split('=')
+        # Only SHA1 is supported
+        if sha_name != 'sha1':
+            abort(501)
+        # HMAC requires the key to be bytes, but data is string
+        mac = hmac.new(str(settings.secret), msg=request.data, digestmod=sha1)
+        if not str(mac.hexdigest()) == str(signature):
+            print "Invalid github signature"
+            abort(403)
     event = request.headers.get('X-GitHub-Event', 'ping')
+    # Handle ping event
     if event == 'ping':
         return dumps({'msg': 'pong'})
     # Gather data
