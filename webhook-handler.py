@@ -38,6 +38,8 @@ def handle_web_hook():
     # Dump payload, if necessary
     if settings.dump_payload:
 	write_payload(payload)
+    # Execute action according to recieved event
+    execute_action(event, name, branch, payload)
     # Make a response. It is not really important
     response = {
         "name": name,
