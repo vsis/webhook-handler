@@ -1,4 +1,5 @@
 import settings
+import actions
 import hmac
 from json import loads, dumps, dump
 from flask import Flask, request, abort
@@ -81,6 +82,19 @@ def get_branch_parameters(payload, event):
 def write_payload(payload):
     with open(settings.dump_payload_file, 'a') as json_file:
         dump(payload, json_file, indent=2)
+
+# Perform an action, according to event type
+def execute_action(event, name, branch, payload):
+    defined_actions = {
+        "push": actions.push,
+        "pull_request": actions.pull_request,
+    }
+    try:
+        action = defined_actions[event]
+    except KeyError:
+        print "Action for '%s' event is not defined" % event
+        abort(501)
+    action(name, branch, payload)
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
