@@ -10,51 +10,42 @@ application = Flask(__name__)
 
 @application.route('/github', methods=['POST'])
 def handle_web_hook():
-    
     # Only SHA1 is supported
     header_signature = request.headers.get('X-Hub-Signature')
     if header_signature is None:
         print "No github signature found!"
         abort(403)
-                                                                  
     sha_name, signature = header_signature.split('=')
     if sha_name != 'sha1':
         abort(501)
-                                                                  
     # HMAC requires the key to be bytes, but data is string
     mac = hmac.new(str(settings.secret), msg=request.data, digestmod=sha1)
-
     if not str(mac.hexdigest()) == str(signature):
         print "Invalid github signature"
         abort(403)
-
     # Handle ping event
     event = request.headers.get('X-GitHub-Event', 'ping')
     if event == 'ping':
         return dumps({'msg': 'pong'})
-
     # Gather data
     try:
         payload = loads(request.data)
     except ValueError:
         abort(400)
-
     # Get repository name and branch
     name, branch = get_branch_parameters(payload, event)
-
     # Dump payload, if necessary
     if settings.dump_payload:
 	write_payload(payload)
-
     # Make a response. It is not really important
     response = {
         "name": name,
         "branch": branch,
         "event": event,
     }
-
     return dumps(response)
 
+# Given a payload and an event, it returns a tuple with repository name and branch
 def get_branch_parameters(payload, event):
     try:
         # Case 1: a ref_type indicates the type of ref.
@@ -85,9 +76,11 @@ def get_branch_parameters(payload, event):
         name = None
     return (name,branch)
 
+# It will write a payload in a file.
+# The file path is given in settings.dump_payload_file
 def write_payload(payload):
     with open(settings.dump_payload_file, 'a') as json_file:
-        dump(payload, json_file, indent=4)
+        dump(payload, json_file, indent=2)
 
 if __name__ == '__main__':
     application.run(debug=True, host='0.0.0.0')
