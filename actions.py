@@ -28,5 +28,6 @@ def get_jenkins_crumb():
     try:
         response = crumb_request.json()
     except ValueError:
+        print "Warning: couldn't decode crumb request."
         response = None
     return response
