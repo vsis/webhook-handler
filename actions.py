@@ -25,10 +25,10 @@ def get_jenkins_crumb():
         auth=requests.auth.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
         params={"xpath": 'concat(//crumbRequestField,":",//crumb)'}
     )
-    print response.text
     try:
         response = crumb_request.json()
     except ValueError:
         print "Warning: couldn't decode crumb request."
         response = None
+    print response.text
     return response
