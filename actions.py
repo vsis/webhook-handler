@@ -5,11 +5,28 @@
 #     branch: this is the name of the branch related to event. It may be None
 #     payload: the whole payload given by github
 #
-
+import settings
+import requests
 
 def push(repo, branch, payload):
-    print "push action"
-
+    crumb = get_jenkins_crumb()
+    job_request = requests.post(
+        "%s/job/pep8/build",
+        headers=crumb
+    )
+    print job_request.text
 
 def pull_request(repo, branch, payload):
     print "pull request"
+
+def get_jenkins_crumb():
+    crumb_request = recuests.get(
+        "%s/crumbIssuer/api/xml" % settings.jenkins_URL,
+        auth=requests.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
+        params={"xpath": 'concat(//crumbRequestField,":",//crumb)'}
+    )
+    try:
+        response = crumb_request.json()
+    except ValueError:
+        response = None
+    return response
