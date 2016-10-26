@@ -22,7 +22,7 @@ def pull_request(repo, branch, payload):
 def get_jenkins_crumb():
     crumb_request = requests.get(
         "%s/crumbIssuer/api/xml" % settings.jenkins_URL,
-        auth=requests.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
+        auth=requests.auth.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
         params={"xpath": 'concat(//crumbRequestField,":",//crumb)'}
     )
     try:
