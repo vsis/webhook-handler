@@ -11,7 +11,7 @@ import requests
 def push(repo, branch, payload):
     crumb = get_jenkins_crumb()
     job_request = requests.post(
-        "%s/job/pep8/build",
+        "%s/job/pep8/build" % settings.jenkins_URL,
         headers=crumb
     )
     print job_request.text
