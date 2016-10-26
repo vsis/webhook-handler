@@ -25,6 +25,7 @@ def get_jenkins_crumb():
         auth=requests.auth.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
         params={"xpath": 'concat(//crumbRequestField,":",//crumb)'}
     )
+    print response.text
     try:
         response = crumb_request.json()
     except ValueError:
