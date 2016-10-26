@@ -3,3 +3,4 @@ pr.example
 ve/
 *.pyc
 *.json
+*.patch
