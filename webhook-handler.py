@@ -39,7 +39,7 @@ def handle_web_hook():
     name, branch = get_branch_parameters(payload, event)
     # Dump payload, if necessary
     if settings.dump_payload:
-	write_payload(payload)
+        write_payload(payload)
     # Execute action according to recieved event
     execute_action(event, name, branch, payload)
     # Make a response. It is not really important
@@ -50,7 +50,9 @@ def handle_web_hook():
     }
     return dumps(response)
 
-# Given a payload and an event, it returns a tuple with repository name and branch
+
+# Given a payload and an event,
+#   it returns a tuple with repository name and branch
 def get_branch_parameters(payload, event):
     try:
         # Case 1: a ref_type indicates the type of ref.
@@ -79,13 +81,15 @@ def get_branch_parameters(payload, event):
         name = payload['repository']['name']
     except KeyError:
         name = None
-    return (name,branch)
+    return (name, branch)
+
 
 # It will write a payload in a file.
 # The file path is given in settings.dump_payload_file
 def write_payload(payload):
     with open(settings.dump_payload_file, 'a') as json_file:
         dump(payload, json_file, indent=2)
+
 
 # Perform an action, according to event type
 def execute_action(event, name, branch, payload):
