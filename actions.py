@@ -6,28 +6,11 @@
 #     payload: the whole payload given by github
 #
 import settings
-import requests
+import jenkins
 
 def push(repo, branch, payload):
-    crumb = get_jenkins_crumb()
-    job_request = requests.post(
-        "%s/job/pep8/build" % settings.jenkins_URL,
-        headers=crumb
-    )
-    print job_request.text
+    server = jenkins.Jenkins(settings.jenkins_URL, username=settings.jenkins_user, password=settings.jenkins_token)
+    server.build_job("pep8")
 
 def pull_request(repo, branch, payload):
     print "pull request"
-
-def get_jenkins_crumb():
-    crumb_request = requests.get(
-        "%s/crumbIssuer/api/xml" % settings.jenkins_URL,
-        auth=requests.auth.HTTPBasicAuth(settings.jenkins_user, settings.jenkins_token),
-        params={"xpath": 'concat(//crumbRequestField,":",//crumb)'}
-    )
-    try:
-        response = crumb_request.json()
-    except ValueError:
-        print "Warning: couldn't decode crumb request."
-        response = None
-    return response
