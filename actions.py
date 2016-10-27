@@ -8,9 +8,15 @@
 import settings
 import jenkins
 
+
 def push(repo, branch, payload):
-    server = jenkins.Jenkins(settings.jenkins_URL, username=settings.jenkins_user, password=settings.jenkins_token)
+    server = jenkins.Jenkins(
+        settings.jenkins_URL,
+        username=settings.jenkins_user,
+        password=settings.jenkins_token
+    )
     server.build_job("pep8")
+
 
 def pull_request(repo, branch, payload):
     print "pull request"
