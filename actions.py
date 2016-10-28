@@ -27,8 +27,10 @@ def pull_request(repo, branch, payload):
         action = payload["action"]
         issue_url = payload["pull_request"]["issue_url"]
     except KeyError:
+        print "Can't parse payload."
         return None
-    if action == "opened" or action == "synchronize":
+    if action in ["opened", "synchronize"]:
+        print "Pull request action: '%'." % action
         _server.build_job("pep8", {
             "branch": branch,
             "issue_url": issue_url
