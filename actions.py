@@ -9,10 +9,11 @@ import settings
 import jenkins
 
 _server = jenkins.Jenkins(
-        settings.jenkins_URL,
-        username=settings.jenkins_user,
-        password=settings.jenkins_token
-     )
+    settings.jenkins_URL,
+    username=settings.jenkins_user,
+    password=settings.jenkins_token
+)
+
 
 def push(repo, branch, payload):
     _server.build_job("pep8", {"branch": branch})
@@ -25,4 +26,7 @@ def pull_request(repo, branch, payload):
     except KeyError:
         return None
     print "pr state: %s" % state
-    _server.build_job("pep8"), {"branch": branch, "pull_request_id": pull_request_id}
+    _server.build_job("pep8", {
+        "branch": branch,
+        "pull_request_id": pull_request_id
+    })
