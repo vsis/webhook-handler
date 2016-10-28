@@ -8,15 +8,30 @@
 import settings
 import jenkins
 
+_server = jenkins.Jenkins(
+    settings.jenkins_URL,
+    username=settings.jenkins_user,
+    password=settings.jenkins_token
+)
+
 
 def push(repo, branch, payload):
-    server = jenkins.Jenkins(
-        settings.jenkins_URL,
-        username=settings.jenkins_user,
-        password=settings.jenkins_token
-    )
-    server.build_job("pep8")
+    if branch == "master" or branch == "develop":
+        _server.build_job("pep8", {"branch": branch})
+    else:
+        print "Ignoring push event for branch: '%s'" % branch
 
 
 def pull_request(repo, branch, payload):
-    print "pull request"
+    try:
+        action = payload["action"]
+        issue_url = payload["pull_request"]["issue_url"]
+    except KeyError:
+        return None
+    if action == "opened" or action == "synchronize":
+        _server.build_job("pep8", {
+            "branch": branch,
+            "issue_url": issue_url
+        })
+    else:
+        print "Ignoring pull request action: '%s'" % action
