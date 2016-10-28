@@ -25,8 +25,10 @@ def pull_request(repo, branch, payload):
         issue_url = payload["pull_request"]["issue_url"]
     except KeyError:
         return None
-    print "pr action: %s" % action
-    _server.build_job("pep8", {
-        "branch": branch,
-        "issue_url": issue_url
-    })
+    if action == "opened" or action == "synchronize":
+        _server.build_job("pep8", {
+            "branch": branch,
+            "issue_url": issue_url
+        })
+    else:
+        print "Ignoring pull request action: '%s'" % action

@@ -98,7 +98,7 @@ def execute_action(event, name, branch, payload):
     try:
         action = defined_actions[event]
     except KeyError:
-        print "Action for '%s' event is not defined" % event
+        print "Ignoring undefined event: '%s'" % event
         return None
     return action(name, branch, payload)
 
