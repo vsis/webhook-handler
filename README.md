@@ -39,7 +39,7 @@ secret = "example secret. use a randomly generated string, plz"
 check_signature = True
 ```
 
-I *strongly* recomend to set `check_signature` to `True`. Set it to `False` only for testing/develptment purposes.
+I *strongly* recomend to set `check_signature` to `True`. Set it to `False` only for testing/developtment purposes.
 
 ### Setup actions
 
