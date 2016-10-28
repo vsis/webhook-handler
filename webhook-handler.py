@@ -100,6 +100,7 @@ def execute_action(event, name, branch, payload):
     except KeyError:
         print "Ignoring undefined event: '%s'" % event
         return None
+    print "Executing action for event: '%s'" % event
     return action(name, branch, payload)
 
 if __name__ == '__main__':
