@@ -16,7 +16,8 @@ _server = jenkins.Jenkins(
 
 
 def push(repo, branch, payload):
-    if branch == "master" or branch == "develop":
+    if branch in ["master", "develop"]:
+        print "New push in branch: '%s'" % branch
         _server.build_job("pep8", {"branch": branch})
     else:
         print "Ignoring push event for branch: '%s'" % branch
