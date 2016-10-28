@@ -1,0 +1,13 @@
+Flask==0.11.1
+Jinja2==2.8
+MarkupSafe==0.23
+PyGithub==1.29
+Werkzeug==0.11.11
+click==6.6
+itsdangerous==0.24
+multi-key-dict==2.0.3
+pbr==1.10.0
+python-jenkins==0.4.13
+requests==2.11.1
+six==1.10.0
+wsgiref==0.1.2
