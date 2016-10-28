@@ -22,11 +22,11 @@ def push(repo, branch, payload):
 def pull_request(repo, branch, payload):
     try:
         action = payload["action"]
-        pull_request_id = payload["pull_request"]["id"]
+        issue_url = payload["pull_request"]["issue_url"]
     except KeyError:
         return None
     print "pr action: %s" % action
     _server.build_job("pep8", {
         "branch": branch,
-        "pull_request_id": pull_request_id
+        "issue_url": issue_url
     })
