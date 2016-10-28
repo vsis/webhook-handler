@@ -96,11 +96,11 @@ def execute_action(event, name, branch, payload):
         "pull_request": actions.pull_request,
     }
     try:
-        print "Executing action for event: '%s'" % event
         action = defined_actions[event]
     except KeyError:
         print "Ignoring undefined event: '%s'" % event
         return None
+    print "Executing action for event: '%s'" % event
     return action(name, branch, payload)
 
 if __name__ == '__main__':
