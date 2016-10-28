@@ -15,7 +15,7 @@ _server = jenkins.Jenkins(
      )
 
 def push(repo, branch, payload):
-    _server.build_job("pep8")
+    _server.build_job("pep8", {"branch": branch})
 
 
 def pull_request(repo, branch, payload):
