@@ -1,8 +1,8 @@
 # GitHub WebHook Handler
 
-This is a flask-based webserver, that performs defines "actions" when it recieves GitHub Webhooks.
+This is a flask-based webserver, that performs defined "actions" when it recieves GitHub Webhooks.
 
-## What's a webhook
+## Wait, what's a webhook?
 
 It is a POST HTTP request, sended by Github, when some events happen.
 Read more here: https://developer.github.com/webhooks/
@@ -21,7 +21,7 @@ You need to take some steps before run webhook-hander.
 
 ### Edit settings
 
-Edit `settings.py`, and modify these variables acording to your jenkins setup.
+Edit `settings.py`, and modify these variables acording to your jenkins setup, if you use Jenkins.
 
 ```
 jenkins_URL = ""
@@ -29,13 +29,13 @@ jenkins_user = ""
 jenkins_token = ""
 ```
 
-Then set a secret for your github repository. Read more here: https://developer.github.com/webhooks/securing/
-You should set `Payload URL` to `${your_server}/github`, and Content Type to `application/json`
+Then, set a secret for your github repository. Read more here: https://developer.github.com/webhooks/securing/
 
-The same secret should be set in `setting.py`:
+You should set `Payload URL` to `${your_server}/github`, and Content Type to `application/json`
+The same secret should be set in `settings.py`:
 
 ```
-secret = ""
+secret = "example secret. use a randomly generated string, plz"
 check_signature = True
 ```
 
