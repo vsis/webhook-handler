@@ -16,7 +16,10 @@ _server = jenkins.Jenkins(
 
 
 def push(repo, branch, payload):
-    _server.build_job("pep8", {"branch": branch})
+    if branch == "master" or branch == "develop":
+        _server.build_job("pep8", {"branch": branch})
+    else:
+        print "Ignoring push event for branch: '%s'" % branch
 
 
 def pull_request(repo, branch, payload):
