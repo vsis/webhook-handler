@@ -30,7 +30,7 @@ def pull_request(repo, branch, payload):
         print "Can't parse payload."
         return None
     if action in ["opened", "synchronize"]:
-        print "Pull request action: '%'." % action
+        print "Pull request action: '%s'." % action
         _server.build_job("pep8", {
             "branch": branch,
             "issue_url": issue_url
